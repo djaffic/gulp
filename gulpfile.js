@@ -6,6 +6,9 @@ const cleanCSS = require('gulp-clean-css');
 const uglify = require('gulp-uglify');
 const del = require('del');
 const browserSync = require('browser-sync').create();
+const sass = require('gulp-sass');
+const sourcemaps = require('gulp-sourcemaps');
+// const watch = require('gulp-watch');
 
 const cssFiles = [
     './src/css/main.css',
@@ -58,6 +61,14 @@ function clean() {
     return del(['build/*'])
 }
 
+function sassCompile() {
+    return gulp.src('./src/scss/**/*.scss')
+    .pipe(sourcemaps.init())
+    .pipe(sass().on('error', sass.logError))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./build/css/'))
+}
+
 function watch() {
     browserSync.init({
         server: {
@@ -66,6 +77,8 @@ function watch() {
     });
     //следить за CSS
     gulp.watch('./src/css/**/*.css', styles)
+    // следить за SCSS
+    gulp.watch('./src/scss/**/*.scss', sassCompile)
     //следить за JS
     gulp.watch('./src/js/**/*.js', scripts)
 //следить за HTML
@@ -78,6 +91,9 @@ gulp.task('styles', styles);
 gulp.task('scripts', scripts);
 //очистка папок
 gulp.task('del', clean);
+
+gulp.task('sass-compile', sassCompile);
+
 //отслеживание изменений в файлах
 gulp.task('watch', watch);
 

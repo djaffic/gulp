@@ -1,0 +1,16 @@
+a {
+    color: #fff;
+    font-size: 15px;
+    &:hover {
+        background: #000;
+        height: 50px;
+        display: block;
+    }
+}
+
+div {
+    background-color: red;
+    &:hover {
+        background-color: blue;
+    }
+}
